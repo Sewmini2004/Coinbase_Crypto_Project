@@ -36,4 +36,4 @@ jobs:
             docker stop coinbase-crypto-container && docker rm coinbase-crypto-container;
           fi
       - name: Run Docker container
-        run: docker run -d -p 8080:8080 --name coinbase-crypto-container sewminidocker/Coinbase_Crypto
+        run: docker run -d -p 8080:8080 --name coinbase-crypto-container sewminidocker/coinsbase_cripto
