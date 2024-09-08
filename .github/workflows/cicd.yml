@@ -22,7 +22,7 @@ jobs:
       - name: Build Docker image
         run: docker build -t sewminidocker/coinsbase_cripto .
       - name: Publish image to Docker Hub
-        run: docker push sewminidocker/Coinbase_Crypto:latest
+        run: docker push sewminidocker/coinsbase_cripto:latest
 
   deploy:
     needs: build
