@@ -9,9 +9,9 @@ jobs:
     runs-on: ubuntu-latest # Corrected runner
     steps:
       - name: Checkout source
-        uses: actions/checkout@v3 # Corrected action name
+        uses: actions/checkout@v4 # Corrected action name
       - name: Setup Java
-        uses: actions/setup-java@v3 # Corrected action name
+        uses: actions/setup-java@v4 # Corrected action name
         with:
           distribution: 'temurin'
           java-version: '17'
