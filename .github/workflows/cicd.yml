@@ -20,7 +20,7 @@ jobs:
       - name: Login to Docker Hub
         run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }} # Fixed secrets typo
       - name: Build Docker image
-        run: docker build -t sewminidocker/Coinbase_Crypto .
+        run: docker build -t sewminidocker/coinsbase_cripto .
       - name: Publish image to Docker Hub
         run: docker push sewminidocker/Coinbase_Crypto:latest
 
@@ -29,7 +29,7 @@ jobs:
     runs-on: ubuntu-latest # Using Ubuntu runner for deployment
     steps:
       - name: Pull image from Docker Hub
-        run: docker pull sewminidocker/Coinbase_Crypto:latest
+        run: docker pull sewminidocker/coinsbase_cripto:latest
       - name: Stop and remove old container (if exists)
         run: |
           if [ $(docker ps -q -f name=coinbase-crypto-container) ]; then
