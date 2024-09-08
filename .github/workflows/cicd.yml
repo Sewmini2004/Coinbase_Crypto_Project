@@ -1,0 +1,37 @@
+name: CICD
+
+on:
+  push:
+    branches: [master]
+
+jobs:
+  build:
+    runs-on: [ubuntu-lates]
+    steps:
+      - name: Checkout source
+        uses: action/checkout@v3
+      - name: Setup Java
+        uses: action/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+      - name: Build Project
+        run: mvn clean install -DskpTests
+      - name: Logic to docker hub
+        run: docker login -u ${{secrets.DOCKER_USENAME}} -p ${{secrets.DOCKER_PASSWORD}}
+      - name: Build docker image
+        run: docker build -t sewminidocker/Coinbase_Crypto .
+      - name: Publish image to docker hub
+        run: docker push sewminidocker/Coinbase_Crypto:latest
+
+  deploy:
+    needs: build
+    run-on: [aws-ec2]
+    steps:
+      - name: Pull Image from docker hub
+        run: docker pull sewminidocker/Coinbase_Crypto:latest
+      - name: Delete old container
+        run: docker rm -f coinbase-crypto-container
+      - name: Run docker container
+        run: docker run -d -p 8080:8080 --name coinbase-crypto-container sewminidocker/Coinbase_Crypto
+
