@@ -29,11 +29,11 @@ jobs:
     runs-on: ubuntu-latest # Using Ubuntu runner for deployment
     steps:
       - name: Pull image from Docker Hub
-        run: docker pull sewminidocker/coinsbase_cripto:latest
+        run: sudo docker pull sewminidocker/coinsbase_cripto:latest
       - name: Stop and remove old container (if exists)
         run: |
           if [ $(docker ps -q -f name=coinbase-crypto-container) ]; then
-            docker stop coinbase-crypto-container && docker rm coinbase-crypto-container;
+            sudo docker stop coinbase-crypto-container && docker rm coinbase-crypto-container;
           fi
       - name: Run Docker container
-        run: docker run -d -p 8082:8082 --name coinbase-crypto-container sewminidocker/coinsbase_cripto
+        run: sudo docker run -d -p 8082:8082 --name coinbase-crypto-container sewminidocker/coinsbase_cripto
