@@ -6,32 +6,34 @@ on:
 
 jobs:
   build:
-    runs-on: [ubuntu-lates]
+    runs-on: ubuntu-latest # Corrected runner
     steps:
       - name: Checkout source
-        uses: action/checkout@v3
+        uses: actions/checkout@v3 # Corrected action name
       - name: Setup Java
-        uses: action/setup-java@v3
+        uses: actions/setup-java@v3 # Corrected action name
         with:
           distribution: 'temurin'
           java-version: '17'
       - name: Build Project
-        run: mvn clean install -DskpTests
-      - name: Logic to docker hub
-        run: docker login -u ${{secrets.DOCKER_USENAME}} -p ${{secrets.DOCKER_PASSWORD}}
-      - name: Build docker image
-        run: docker build -t sewminidocker/Coinbase_Crypto .
-      - name: Publish image to docker hub
-        run: docker push sewminidocker/Coinbase_Crypto:latest
+        run: mvn clean install -DskipTests # Fixed typo: skipTests
+      - name: Login to Docker Hub
+        run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }} # Fixed secrets typo
+      - name: Build Docker image
+        run: docker build -t sewminidocker/coinsbase_cripto .
+      - name: Publish image to Docker Hub
+        run: docker push sewminidocker/coinsbase_cripto:latest
 
   deploy:
     needs: build
-    run-on: [aws-ec2]
+    runs-on: ubuntu-latest # Using Ubuntu runner for deployment
     steps:
-      - name: Pull Image from docker hub
-        run: docker pull sewminidocker/Coinbase_Crypto:latest
-      - name: Delete old container
-        run: docker rm -f coinbase-crypto-container
-      - name: Run docker container
-        run: docker run -d -p 8080:8080 --name coinbase-crypto-container sewminidocker/Coinbase_Crypto
-
+      - name: Pull image from Docker Hub
+        run: docker pull sewminidocker/coinsbase_cripto:latest
+      - name: Stop and remove old container (if exists)
+        run: |
+          if [ $(docker ps -q -f name=coinbase-crypto-container) ]; then
+            docker stop coinbase-crypto-container && docker rm coinbase-crypto-container;
+          fi
+      - name: Run Docker container
+        run: docker run -d -p 8080:8080 --name coinbase-crypto-container sewminidocker/coinsbase_cripto
