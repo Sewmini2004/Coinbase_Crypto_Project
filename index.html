@@ -1,10 +1,55 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Currency Exchange Rates</title>
 </head>
 <body>
+<h1>Currency Exchange Rates</h1>
+<label for="currency">Select Currency:</label>
+<select id="currency">
+    <!-- Options will be populated by JavaScript -->
+</select>
+<br>
+<label for="start">Start Time:</label>
+<input type="datetime-local" id="start">
+<label for="end">End Time:</label>
+<input type="datetime-local" id="end">
+<button onclick="fetchRates()">Get Rates</button>
+<h2>Rates:</h2>
+<div id="rates"></div>
 
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Populate the currency dropdown
+        fetch('/api/currencies')
+            .then(response => response.json())
+            .then(data => {
+                const select = document.getElementById('currency');
+                data.forEach(currency => {
+                    const option = document.createElement('option');
+                    option.value = currency.code;
+                    option.textContent = currency.name;
+                    select.appendChild(option);
+                });
+            });
+    });
+
+    function fetchRates() {
+        const currencyCode = document.getElementById('currency').value;
+        const start = document.getElementById('start').value;
+        const end = document.getElementById('end').value;
+        fetch(`/api/rates?currencyCode=${currencyCode}&start=${start}&end=${end}`)
+            .then(response => response.json())
+            .then(data => {
+                const ratesDiv = document.getElementById('rates');
+                ratesDiv.innerHTML = '';
+                data.forEach(rate => {
+                    const p = document.createElement('p');
+                    p.textContent = `Rate: ${rate.rate}, Timestamp: ${rate.timestamp}`;
+                    ratesDiv.appendChild(p);
+                });
+            });
+    }
+</script>
 </body>
 </html>
