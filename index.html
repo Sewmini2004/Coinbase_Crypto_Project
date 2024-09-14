@@ -1,104 +1,12 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Currency Exchange Rates</title>
+    <meta charset="UTF-8">
+    <title>Title</title>
 </head>
-<title>Currency Exchange Rates</title>
-<style>
-    body {
-        font-family: Arial, sans-serif;
-        margin: 20px;
-        background-color: #f9f9f9;
-        color: #333;
-    }
-    h1 {
-        text-align: center;
-        color: #2c3e50;
-    }
-    label {
-        font-weight: bold;
-        margin-right: 10px;
-    }
-    select, input {
-        padding: 8px;
-        margin-bottom: 10px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        width: 100%;
-        max-width: 300px;
-    }
-    button {
-        padding: 10px 20px;
-        background-color: #3498db;
-        color: white;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-    }
-    button:hover {
-        background-color: #2980b9;
-    }
-    .container {
-        max-width: 600px;
-        margin: 0 auto;
-        background-color: white;
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    }
-    #rates {
-        margin-top: 20px;
-        font-size: 1.2em;
-    }
-</style>
 <body>
-<h1>Currency Exchange Rates</h1>
-<label for="currency">Select Currency:</label>
-<select id="currency">
-    <!-- Options will be populated by JavaScript -->
-</select>
-<br>
-<label for="start">Start Time:</label>
-<input type="datetime-local" id="start">
-<label for="end">End Time:</label>
-<input type="datetime-local" id="end">
-<button onclick="fetchRates()">Get Rates</button>
-<h2>Rates:</h2>
-<div id="rates"></div>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Populate the currency dropdown
-        fetch('/api/currencies')
-            .then(response => response.json())
-            .then(data => {
-                const select = document.getElementById('currency');
-                data.forEach(currency => {
-                    const option = document.createElement('option');
-                    option.value = currency.code;
-                    option.textContent = currency.name;
-                    select.appendChild(option);
-                });
-            });
-    });
-
-    function fetchRates() {
-        const currencyCode = document.getElementById('currency').value;
-        const start = document.getElementById('start').value;
-        const end = document.getElementById('end').value;
-        fetch(`/api/rates?currencyCode=${currencyCode}&start=${start}&end=${end}`)
-            .then(response => response.json())
-            .then(data => {
-                const ratesDiv = document.getElementById('rates');
-                ratesDiv.innerHTML = '';
-                data.forEach(rate => {
-                    const p = document.createElement('p');
-                    p.textContent = `Rate: ${rate.rate}, Timestamp: ${rate.timestamp}`;
-                    ratesDiv.appendChild(p);
-                });
-            });
-    }
-
-</script>
 </body>
 </html>
+
+
