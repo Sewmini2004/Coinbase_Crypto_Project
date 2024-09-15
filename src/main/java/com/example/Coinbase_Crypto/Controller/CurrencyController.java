@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
-@CrossOrigin
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/api/currencies")
 public class CurrencyController {
@@ -28,6 +28,30 @@ public class CurrencyController {
     ) {
         return currencyService.updatePrice(fromCode, toCode, amount);
     }
+
+    // New POST endpoint to add a currency
+    @PostMapping("/add")
+    public CurrencyDTO addCurrency(@RequestBody CurrencyDTO currencyDTO) {
+        return currencyService.saveCurrency(currencyDTO);
+    }
+
+
+    @GetMapping("/{id}")
+    public CurrencyDTO getCurrencyById(@PathVariable Long id) {
+        return currencyService.getCurrencyById(id);
+    }
+
+    @PutMapping("/update/{id}")
+    public CurrencyDTO updateCurrency(@PathVariable Long id, @RequestBody CurrencyDTO currencyDTO) {
+        return currencyService.updateCurrency(id, currencyDTO);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public void deleteCurrency(@PathVariable Long id) {
+        currencyService.deleteCurrency(id);
+    }
+
+
 
 
 

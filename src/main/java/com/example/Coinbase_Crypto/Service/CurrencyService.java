@@ -39,4 +39,46 @@ public class CurrencyService {
 
         return dto;
     }
+
+
+    // New method to save a currency
+    public CurrencyDTO saveCurrency(CurrencyDTO currencyDTO) {
+        Currency currency = new Currency();
+        currency.setCode(currencyDTO.getCode());
+        currency.setName(currencyDTO.getName());
+        currency.setPrice(currencyDTO.getPrice());
+
+        Currency savedCurrency = currencyRepository.save(currency);
+
+        currencyDTO.setId(savedCurrency.getId());
+        return currencyDTO;
+    }
+
+
+    public CurrencyDTO getCurrencyById(Long id) {
+        Currency currency = currencyRepository.findById(id).orElseThrow(() -> new RuntimeException("Currency not found"));
+        CurrencyDTO dto = new CurrencyDTO();
+        dto.setId(currency.getId());
+        dto.setCode(currency.getCode());
+        dto.setName(currency.getName());
+        dto.setPrice(currency.getPrice());
+        return dto;
+    }
+
+    public CurrencyDTO updateCurrency(Long id, CurrencyDTO currencyDTO) {
+        Currency currency = currencyRepository.findById(id).orElseThrow(() -> new RuntimeException("Currency not found"));
+        currency.setCode(currencyDTO.getCode());
+        currency.setName(currencyDTO.getName());
+        currency.setPrice(currencyDTO.getPrice());
+        Currency updatedCurrency = currencyRepository.save(currency);
+        currencyDTO.setId(updatedCurrency.getId());
+        return currencyDTO;
+    }
+
+    public void deleteCurrency(Long id) {
+        currencyRepository.deleteById(id);
+    }
+
+
+
 }
